@@ -1,0 +1,137 @@
+\documentclass[a4paper, 12pt]{article}
+
+%Bookmarks
+\usepackage[colorlinks=true,urlcolor=cyan,linkcolor=black,citecolor=red,bookmarksopen=true]{hyperref}
+\usepackage{bookmark}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{pgf,tikz}
+\usepackage{mathrsfs}
+\usepackage{listings}
+\usetikzlibrary{arrows}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage{epigraph}
+
+%Margins
+\usepackage[margin=1.0in]{geometry}
+
+%Images%
+\usepackage{graphicx}
+\usepackage{float}
+
+%Citations
+\usepackage[round]{natbib}
+\bibliographystyle{plainnat}
+
+%Code
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\newcommand{\mysection}[1]{\section*{#1} \addcontentsline{toc}{section}{#1}}
+\newcommand{\mysubsection}[1]{\subsection*{#1} \addcontentsline{toc}{subsection}{#1}}
+\newcommand{\mysubsubsection}[1]{\subsubsection*{#1} \addcontentsline{toc}{subsubsection}{#1}}
+
+\newcommand{\myFigure}[3]{\begin{figure}[h!]\centering\includegraphics[scale=#1]{figures/#2}\caption{#3}\end{figure}}
+
+\newcommand{\Problem}[4]{\subsection*{#1} \addcontentsline{toc}{subsection}{#1}
+\centerline{\textit{Programing language: #2} \quad \textit{Difficulty: #3} \quad \textit{Est: #4 hrs.}}}
+
+\newcommand{\mycitation}[1]{[\citet{#1}]}
+
+\begin{document}
+
+    % % % % % % % % % % % % % % % % %
+    %
+    %	FRONT PAGE
+    %
+    \input{./uib_frontpage.tex}
+
+    % % % % % % % % % % % % % % % % %
+    %
+    %	TABLE OF CONTENTS
+    %
+    \pdfbookmark{\contentsname}{toc}
+    \tableofcontents
+    \newpage
+
+    % % % % % % % % % % % % % % % % %
+    %
+    %	Abstract
+    %
+    \mysection{Abstract}
+    This document is meant to give an insight in how the algorithms were designed. The intention is to give a deeper 
+    explanation to the thought process in the hopes of helping others understand while also helping myself to remember
+    how it was done. It is important to mention that this course does require an oral test at the end of the semester
+    and this text will help me in the preparation for this.
+    \\
+    This course uses Kattis as a tool to publish the weekly challenges, and also test submissions. The algorithms that are submidted are
+    thurougly tested over many hidden tests to affirm that they do fulfill all requirements. In order to pass this course a given
+    number of problems must be completed each week, and they usually hold a theme in common.
+
+    \newpage
+    
+    % % % % % % % % % % % % % % % % %
+    %
+    %	Assignment 1
+    %
+	\mysection{Assignment 1: Ad-hoc}	
+    The first week was obviusly only a few simple problems as to get to know the Kattis tool. I used this time to experiment with some different programming languages like Java, C++
+    and Haskell. 
+
+    \Problem{Taks one: Oddities}{Java}{Beginner}{0.5}
+    This problem was really straight foreward. Given the input of any random number \textit{n} of a 
+    given size, write if the given number is \textit{odd} or \textit{even}. So I guess there is
+    little to say about the logic here. Could possibly have been solved even faster in Haskell than java.
+
+    \Problem{Taks two: Different Problem}{Haskell}{Beginner}{0.5}
+    This problem simply gives you two numbers \textit{a} and \textit{b} and wants the output of the \textbf{absolute distance}. This is solved
+    quite simply in Haskell with the recursive function
+    \lstset{language=Haskell}
+    \begin{lstlisting}
+        solve :: [Integer] -> [Integer]
+        solve [] = []
+        solve (a:b:xs) = abs(a - b):(solve xs)
+    \end{lstlisting}
+
+    \Problem{Taks three: Guess the number}{C++}{Easy}{2}
+    This is a simple simulation of the old guessing game. The computer decides a number $1 \leq n \leq 1000$, and your algorithm should be able to guess the correct
+    number within 10 questions given an honest responce of higher/lower/correct. This has to be done by a binary search.
+
+    \Problem{Taks four: Turtle master}{C++}{Easy}{3}
+    In this problem we are given a game-board with a robot, a goal and some obsticles. Then we are given inputs (commands) for the robot to follow, and wee
+    shall simply simulate the result. Then if all criteria is met we should return either \textit{Diamond!} if correct, or \textit{Bug!} if any error/illegal move occurs.
+    \\
+    The short solution to this problem was simply a full on object oriented approach. I simply made a Position object and read from the map if any new positions was valid. Now
+    finally if the robot was standing on the goal in the end, print \textit{"Diamond!"}. Now this took a lot of extra time due to me not knowing C++ and how to use pointers.
+
+    % % % % % % % % % % % % % % % % %
+    %
+    %	ADD REFERANCES
+    %
+    %\bibliography{citation-db}
+    %\addcontentsline{toc}{section}{References}
+
+\end{document}
