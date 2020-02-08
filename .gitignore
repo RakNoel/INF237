@@ -110,3 +110,8 @@ cabal.project.local~
 *.fls
 *.synctex*
 *.*_latexmk
+
+###################################
+##         Visual Studio         ##
+###################################
+.vs/
