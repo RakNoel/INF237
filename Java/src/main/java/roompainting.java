@@ -19,9 +19,8 @@ public class roompainting {
         Arrays.sort(wanted);
 
         int lastTaken = 0;
-        int waste = 0;
+        long waste = 0;
 
-        //Just search... damn it why shold bin-s be better?
         for (int i = 0; i < m; i++)
             for (int j = lastTaken; j < n; j++)
                 if (wanted[i] <= possible[j]) {
