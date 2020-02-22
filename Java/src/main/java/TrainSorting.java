@@ -1,82 +1,46 @@
 public class TrainSorting {
-    public static int LIS(int arr[]) {
-        if (arr.length <= 2) return arr.length;
-
-        int[] T = new int[arr.length];
-        int tp = 0;
-        int longest = 1;
-        T[0] = arr[0];
-
-        for (int i = 1; i < arr.length; i++) {
-            var working = arr[i];
-            if (working >= T[tp]) {
-                T[++tp] = working;
-                longest++;
-                continue;
+    public static int[] LIS(int[] a) {
+        int[] dp = new int[a.length];
+        dp[0] = 1;
+        for (int i = 0; i < a.length; i++)
+            for (int k = 0; k < i; k++) {
+                var p = 1;
+                if (a[k] < a[i])
+                    p = dp[k] + 1;
+                dp[i] = Math.max(dp[i], p);
             }
-
-            //BinarySearch T
-            int minP = 0;
-            int maxP = longest;
-            int searcher = 0;
-            while (minP < maxP){
-                searcher = (int) Math.ceil((maxP + minP) / 2);
-                if (working < T[searcher]){
-                    maxP = searcher - 1;
-                } else if (working > T[searcher]) {
-                    minP = searcher + 1;
-                }
-            }
-            T[searcher] = working;
-        }
-
-        return longest;
+        return dp;
     }
 
-    public static int LDS(int arr[]) {
-        if (arr.length <= 1) return arr.length;
-
-        int[] T = new int[arr.length];
-        int tp = 0;
-        int longest = 1;
-        T[0] = arr[0];
-
-        for (int i = 1; i < arr.length; i++) {
-            var working = arr[i];
-            if (working <= T[tp]) {
-                T[++tp] = working;
-                longest++;
-                continue;
-            }
-
-            //BinarySearch T
-            int minP = 0;
-            int maxP = longest;
-            int searcher = 0;
-            while (minP < maxP){
-                searcher = (int) Math.floor((maxP + minP) / 2);
-                if (working > T[searcher]){
-                    maxP = searcher - 1;
-                } else if (working < T[searcher]) {
-                    minP = searcher + 1;
-                }
-            }
-            searcher = (int) Math.floor((maxP + minP) / 2);
-            if (T[searcher] > working) searcher++;
-            T[searcher] = working;
+    public static int[] LDS(int[] a) {
+        //Flip array a
+        for (int i = 0; i < a.length / 2; i++) {
+            int temp = a[i];
+            a[i] = a[a.length - i - 1];
+            a[a.length - i - 1] = temp;
         }
-
-        return longest;
+        return LIS(a);
     }
 
-    public static void main(String args[]) {
+    public static int LBS(int[] a) {
+        var lis = LIS(a);
+        var lds = LDS(a);
+        int max = (lis[0] + lds[0] - 1);
+        for (int i = 0; i < lis.length; i++) max = Math.max(max, (lis[i] + lds[i] - 1));
+        return max;
+    }
+
+    public static void main(String[] args) {
         Kattio kattio = new Kattio(System.in, System.out);
         int n = kattio.getInt();
+        if (n <= 3) {
+            System.out.println(n);
+            return;
+        }
 
         int[] searchArray = new int[n];
-        for (int i = 0; i < n; i++)
-            searchArray[i] = kattio.getInt();
+        for (int i = 0; i < n; i++) searchArray[i] = kattio.getInt();
 
-        System.out.println(Math.max(LIS(searchArray), LDS(searchArray)));
+        System.out.println(LBS(searchArray));
     }
 }
