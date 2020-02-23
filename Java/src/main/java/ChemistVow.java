@@ -37,13 +37,15 @@ public class ChemistVow {
                 }
             }
         }
-        return doubleSearch(singles, doubles, 0);
+        return doubleSearch(singles, doubles, 0, new boolean[chars.length + 1]);
     }
 
-    public static boolean doubleSearch(boolean[] singles, boolean[] doubles, int sp) {
+    public static boolean doubleSearch(boolean[] singles, boolean[] doubles, int sp, boolean[] working) {
+        if (working[sp]) return false;
         for (int i = sp; i < singles.length; ) {
+            working[i] = true;
             if (singles[i] && doubles[i]) {
-                return doubleSearch(singles, doubles, i + 1) || doubleSearch(singles, doubles, i + 2);
+                return doubleSearch(singles, doubles, i + 1, working) || doubleSearch(singles, doubles, i + 2, working);
             } else if (doubles[i]) {
                 i += 2;
             } else if (singles[i]) {
