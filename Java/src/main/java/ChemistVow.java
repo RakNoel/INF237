@@ -1,6 +1,5 @@
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class ChemistVow {
     public static final String[] TableOfDoubleElements = {"ac", "ag", "al", "am", "ar", "as", "at", "au", "ba", "be", "bh", "bi",
@@ -13,42 +12,47 @@ public class ChemistVow {
 
     public static final char[] TableOfSingleElements = {'b', 'c', 'f', 'h', 'i', 'k', 'n', 'o', 'p', 's', 'u', 'v', 'w', 'y'};
 
-    static HashMap<String, Boolean> storage;
+
+    static HashMap<Character, Boolean> sta = new HashMap<>();
+    static HashMap<String, Boolean> stb = new HashMap<>();
 
     public static boolean isWritableInTableOfElements(String word) {
-        if (storage == null) storage = new HashMap<>();
-        if (storage.containsKey(word)) return storage.get(word);
+        var chars = word.toCharArray();
+        boolean[] singles = new boolean[chars.length];
+        boolean[] doubles = new boolean[chars.length];
+        for (int i = 0, j = 2; i < chars.length; i++, j++) {
+            char a = word.charAt(i);
 
-        if (word.length() == 0) return true;
-        else if (word.length() == 1) {
-            var existInSmall = Arrays.binarySearch(TableOfSingleElements, word.charAt(0)) >= 0;
-            storage.put(word, existInSmall);
-            return existInSmall;
+            if (sta.containsKey(a)) singles[i] = sta.get(a);
+            else {
+                singles[i] = Arrays.binarySearch(TableOfSingleElements, a) >= 0;
+                sta.put(a, singles[i]);
+            }
+            if (j <= chars.length) {
+                var x = word.substring(i, j);
+                if (stb.containsKey(word.substring(i, j))) doubles[i] = stb.get(x);
+                else {
+                    doubles[i] = Arrays.binarySearch(TableOfDoubleElements, x) >= 0;
+                    stb.put(x, doubles[i]);
+                }
+            }
         }
+        return doubleSearch(singles, doubles, 0);
+    }
 
-        var letter = word.charAt(0);
-        var dLetter = word.substring(0, 2);
-
-        var a = Arrays.binarySearch(TableOfSingleElements, letter) >= 0;
-        var b = Arrays.binarySearch(TableOfDoubleElements, dLetter) >= 0;
-
-        if (a && b)
-            return isWritableInTableOfElements(word.substring(1)) || isWritableInTableOfElements(word.substring(2));
-        else if (a) {
-            var res = isWritableInTableOfElements(word.substring(1));
-            if (word.length() < 500)
-                storage.put(word, res);
-            return res;
-        } else if (b) {
-            var res = isWritableInTableOfElements(word.substring(2));
-            if (word.length() < 500)
-                storage.put(word, res);
-            return res;
-        } else {
-            if (word.length() < 500)
-                storage.put(word, false);
-            return false;
+    public static boolean doubleSearch(boolean[] singles, boolean[] doubles, int sp) {
+        for (int i = sp; i < singles.length; ) {
+            if (singles[i] && doubles[i]) {
+                return doubleSearch(singles, doubles, i + 1) || doubleSearch(singles, doubles, i + 2);
+            } else if (doubles[i]) {
+                i += 2;
+            } else if (singles[i]) {
+                i += 1;
+            } else {
+                return false;
+            }
         }
+        return true;
     }
 
     public static void main(String[] args) {
