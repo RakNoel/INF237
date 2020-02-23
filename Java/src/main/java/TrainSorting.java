@@ -1,57 +1,25 @@
 import java.util.Arrays;
 
 public class TrainSorting {
-    public static int[] LIS(int[] a) {
-        int[] dp = new int[a.length];
-        Arrays.fill(dp, 1);
-        for (int i = 1; i < a.length; i++)
-            for (int k = 0; k < i; k++) {
-                if (a[k] < a[i] && dp[i] < dp[k] + 1)
-                    dp[i] = dp[k] + 1;
-            }
-        return dp;
-    }
 
-    public static int[] LISBackwards(int[] a) {
-        int[] dp = new int[a.length];
-        Arrays.fill(dp, 1);
-        for (int i = a.length - 2; i >= 0 ; i--)
-            for (int k = a.length - 1; k > i; k--) {
-                if (a[k] > a[i] && dp[i] < dp[k] + 1)
-                    dp[i] = dp[k] + 1;
-            }
-        return dp;
-    }
+    public static int solveProblem(int[] a) {
+        if (a.length <= 2) return a.length;
 
-    public static int[] LDS(int[] a) {
-        int[] dp = new int[a.length];
-        Arrays.fill(dp, 1);
+        int[] lds = new int[a.length];
+        int[] lis = new int[a.length];
+        int res = 1;
+        Arrays.fill(lds, 1);
+        Arrays.fill(lis, 1);
         for (int i = a.length - 2; i >= 0; i--)
             for (int k = a.length - 1; k > i; k--) {
-                if (a[k] < a[i] && dp[i] < dp[k] + 1)
-                    dp[i] = dp[k] + 1;
+                if (a[k] < a[i] && lds[i] < lds[k] + 1)
+                    lds[i] = lds[k] + 1;
+                else if (a[k] > a[i] && lis[i] < lis[k] + 1)
+                    lis[i] = lis[k] + 1;
+
+                res = Math.max(res, (lis[i] + lds[i]) - 1);
             }
-        return dp;
-    }
-
-    public static int LBS(int[] a) {
-        if (a.length <= 2) return a.length;
-
-        var lis = LIS(a);
-        var lds = LDS(a);
-        int max = (lis[0] + lds[0] - 1);
-        for (int i = 1; i < lis.length; i++) max = Math.max(max, (lis[i] + lds[i]) - 1);
-        return max;
-    }
-
-    public static int solveProblem(int[] a){
-        if (a.length <= 2) return a.length;
-
-        var lis = LISBackwards(a);
-        var lds = LDS(a);
-        int max = (lis[0] + lds[0] - 1);
-        for (int i = 1; i < lis.length; i++) max = Math.max(max, (lis[i] + lds[i]) - 1);
-        return max;
+        return res;
     }
 
     public static void main(String[] args) {
