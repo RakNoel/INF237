@@ -7,15 +7,23 @@ public class GruesomeCaveTest {
 
     public static final char[][] BASICTEST = {
             {'#', '#', '#', '#', '#', '#'},
-            {'#', '#', ' ', '#', '#', '#'},
-            {'E', ' ', ' ', ' ', 'D', '#'},
-            {'#', '#', ' ', '#', '#', '#'},
+            {'#', ' ', ' ', ' ', ' ', '#'},
+            {'E', ' ', ' ', ' ', ' ', '#'},
+            {'#', ' ', ' ', ' ', ' ', '#'},
+            {'#', ' ', ' ', ' ', ' ', '#'},
+            {'#', ' ', ' ', ' ', ' ', '#'},
+            {'#', ' ', ' ', ' ', ' ', '#'},
+            {'#', ' ', ' ', ' ', ' ', '#'},
+            {'#', ' ', ' ', ' ', ' ', '#'},
+            {'#', ' ', ' ', ' ', ' ', '#'},
+            {'#', ' ', ' ', ' ', ' ', '#'},
+            {'#', ' ', ' ', ' ', 'D', '#'},
             {'#', '#', '#', '#', '#', '#'}
     };
 
     @Test
     public void calculateGrueRiskKattisTest() {
-        assertEquals(0.75f, GruesomeCave.calculateGrueRisk(BASICTEST));
+        assertEquals(0.23943661971830985, GruesomeCave.calculateGrueRisk(BASICTEST));
     }
 
     @Test

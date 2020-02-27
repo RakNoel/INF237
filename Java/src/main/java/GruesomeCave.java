@@ -9,7 +9,10 @@ public class GruesomeCave {
         scn.nextLine();
         char[][] chars = new char[L][W];
 
-        for (int l = 0; l < L; l++) chars[l] = scn.nextLine().toCharArray();
+        for (int l = 0; l < L; l++) {
+            var tmp = scn.nextLine().toCharArray();
+            for (int w = 0; w < W; w++) chars[l][w] = tmp[w];
+        }
 
         System.out.println(calculateGrueRisk(chars));
     }
@@ -40,8 +43,8 @@ public class GruesomeCave {
 
             for (var p : getNeighbohurs(cx, cy, maze))
                 if (risksTable[p.y][p.x] > -1)
-                    if (distTable[p.y][p.x] > distTable[cy][cx] + risksTable[cy][cx]) {
-                        distTable[p.y][p.x] = distTable[cy][cx] + risksTable[cy][cx];
+                    if (distTable[p.y][p.x] > distTable[cy][cx] + risksTable[p.y][p.x]) {
+                        distTable[p.y][p.x] = distTable[cy][cx] + risksTable[p.y][p.x];
                         p.value = distTable[p.y][p.x];
                         q.add(p);
                     }
@@ -67,7 +70,7 @@ public class GruesomeCave {
     public static int[][] getRiskTable(char[][] maze) {
         int[][] risks = new int[maze.length][maze[0].length];
         for (int i = 0; i < maze.length; i++) {
-            for (int j = 0; j < maze[0].length; j++) {
+            for (int j = 0; j < maze[i].length; j++) {
                 switch (maze[i][j]) {
                     case '#':
                         risks[i][j] = -1;
@@ -77,7 +80,7 @@ public class GruesomeCave {
                         risks[i][j] = 0;
                         break;
                     case ' ':
-                        for (Pos p : getNeighbohurs(i, j, maze)) if (maze[p.y][p.x] == ' ') risks[p.y][p.x]++;
+                        for (Pos p : getNeighbohurs(j, i, maze)) if (maze[p.y][p.x] == ' ') risks[p.y][p.x]++;
                         break;
                     default:
                         throw new IllegalStateException("Unexpected value: " + maze[i][j]);
@@ -91,12 +94,13 @@ public class GruesomeCave {
         ArrayList<Pos> valids = new ArrayList<>();
         int[] x = {0, +1, 0, -1};
         int[] y = {+1, 0, -1, 0};
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++) {
             try {
                 if (maze[cy - y[i]][cx - x[i]] != '#')
                     valids.add(new Pos(cx - x[i], cy - y[i]));
             } catch (IndexOutOfBoundsException ignore) {
             }
+        }
         return valids;
     }
 }
