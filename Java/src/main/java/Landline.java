@@ -82,7 +82,6 @@ class Line implements Comparable<Line> {
     }
 }
 
-
 class UnionFind {
     private int[] pointer;
     private int[] size;
