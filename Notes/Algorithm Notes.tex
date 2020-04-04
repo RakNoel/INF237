@@ -127,11 +127,196 @@
     The short solution to this problem was simply a full on object oriented approach. I simply made a Position object and read from the map if any new positions was valid. Now
     finally if the robot was standing on the goal in the end, print \textit{"Diamond!"}. Now this took a lot of extra time due to me not knowing C++ and how to use pointers.
 
+	\newpage
     % % % % % % % % % % % % % % % % %
     %
-    %	ADD REFERANCES
+    %	Assignment 2
     %
-    %\bibliography{citation-db}
-    %\addcontentsline{toc}{section}{References}
+	\mysection{Assignment 2: Graphs 1}
+	\Problem{Reversing Roads}{Java}{Medium}{5}
+	This problem could be really easy if we should only test if it was valid or not. Unfortunately we also need to test if it can be solved by flipping one single road.
+	\\\\
+	To store the graph i made an adjacency-matrix, but since those usually take a lot of memory it had to be compressed, that's why I used BitSet. I read the input and built the matrix. Right after we can do shorter validations to remove some simpler solutions like if there exist only one house, or if there are not enough roads to be mathematically feasible.
+	\\\\
+	Now using a DFS i test the solution. If it's valid then output \textit{"valid"} and terminate, if not we iterate over all roads, flip them, and try again, if now valid then output the road flipped and terminate. If none is valid output \textit{"invalid"} and terminate.
+	
+	\Problem{The Maze Makers}{Java}{Medium}{5}
+	Solving this took quite a while. The question is overly complicated and confusing with the binary part resulting in a lot of programming.
+	\\\\
+	I solved the problem by using a DFS algorithm visiting all possible nodes counting them as we go starting from the first hole found in the wall. If any was already visited it needed to store that. Due to the problem having a priority list of reported errors; it was necessary to store errors occurring and not terminate.
+	\\\\
+	To traverse the graph it was necessary to interpret the different symbols. Since they had a binary translation their char values could be converted to the integer value, from which we could read the walls.
+	
+	\newpage
+    % % % % % % % % % % % % % % % % %
+    %
+    %	Assignment 3
+    %
+	\mysection{Assignment 3: Sliding, searching and sorting}
+	\Problem{Free Weights}{C++}{Easy}{3}
+	Now this problem can be done by simply removing weights smaller than a given weight X and testing if the solution is valid. The problem with this is that it would take quite a while if there are many different weights.
+	\\\\
+	To combat the issue of many different weights we can use the same solution, but instead of as linear search, we do a binary search.
+	\\\\
+	Now this solution is not necessarily the optimal due to the use of \textit{std::copy\_if} to filter, which could be skipped and just added to the loop instead.
+	
+	\Problem{Room painting}{C++}{Easy}{5}
+	This problem is really easy and I used a lot of unnecessary time due to a simple mistake of using a 32 bit integer instead of a 64 bit resulting in failure.
+	\\\\
+	To solve this, one could sort the shop-list, iterate over all the wanted-list, and binary search for the closest bucket. For each iteration add the difference of the closest bucket found.
+	\\\\
+	Now an even faster solution here is to sort both lists and use a linear search while storing the position of the last found.
+	
+	\lstset{language=C++}
+	\begin{lstlisting}
+	 for (int i = 0; i < m; i++)
+       for (int j = lastTaken; j < n && n > 0; j++)
+         if (wanted[i] <= possible[j]) {
+           waste += possible[j] - wanted[i];
+           lastTaken = j;
+           break;
+         }
+	\end{lstlisting}
+	
+	\newpage
+    % % % % % % % % % % % % % % % % %
+    %
+    %	Assignment 4
+    %
+	\mysection{Assignment 4: Dynamic programming 1}
+	\Problem{Train sorting}{C++}{Medium}{8}
+	This problem took a while due to trying an invalid solution. The problem can be solved by using \textit{Longest Decreasing Subsequence} plus \textit{Longest Increasing Subsequence}. Hence in a single loop we find both \textit{lis} and \textit{lds}, then we iterate over all positions of the trains and find the maximal solution -1 so we dont add the middle cart twice.
+	\\\\
+	Now it's important that we find both the \textit{lis} and \textit{lds} backwards, since we will pick up the carts or drop them, as we cannot go backwards.
+	
+	\lstset{language=Java}
+	\begin{lstlisting}
+	int res = 1;
+    Arrays.fill(lds, 1);
+    Arrays.fill(lis, 1);
+	for (int i = a.length - 2; i >= 0; i--)
+      for (int k = a.length - 1; k > i; k--) {
+        if (a[k] < a[i] && lds[i] < lds[k] + 1)
+          lds[i] = lds[k] + 1;
+        else if (a[k] > a[i] && lis[i] < lis[k] + 1)
+          lis[i] = lis[k] + 1;
+
+        res = Math.max(res, (lis[i] + lds[i]) - 1);
+      }
+    return res;
+	\end{lstlisting}
+	
+	\Problem{Chemist vow}{C++}{Medium}{5}
+	The most annoying part of this was to order the possible elements and add them into the lists. Although the problem is not too easy itself, but can be solved efficiently with a recursive branching algorithm.
+	\\\\
+	It must be stated that a non optimal solution can still test all known words from the English alphabet in reasonable time, but this specific problem requires an efficient solution which can complete longer tests.
+	\\\\
+	To solve this one iterates over each letter and tests if there exist a valid solution for either \textit{letter[i]} or \textit{letter[i] + letter[++i]} recursively. The important part here is for a branch to store if a given position is invalid so to stop later branches from continuing from that point.
+	
+	\newpage
+    % % % % % % % % % % % % % % % % %
+    %
+    %	Assignment 5
+    %
+	\mysection{Assignment 5: Graphs 2}
+	\Problem{Gruesome Cave}{Java}{Hard}{10}
+	This problem can be solved by finding the minimum path from entry to the diamond, if we use the cost as the probability of the monster being inside that given node.
+	\\\\
+	Calculating the probability is possibly the most challenging part of the entire problem. By statistics we can say that since it's a connected graph we can say that each cells probability of the monster 	standing in it (or its cost) can be calculated by its degree (number of connected edges) divided by the total risk.
+	
+	\Problem{Landline Telephone Network}{C++}{Easy}{3}
+	This problem asks for what is essentially a minimum spanning tree or \textit{MST}. The main difference here is that there are certain nodes required to be leaf-nodes.
+	\\\\
+	To solve this I used a Kruskal approach, but before connecting the nodes I sort the nodes (or rather edges) into either \textit{"good"}, \textit{"bad"} and \textit{"superbad"}; where the nodes that connect two bad nodes are just removed.
+	\\\\
+	Now since Kruskal works on edges and with Union Find we can just create an \textit{MST} from the good nodes. Now if at this point the unconnected houses is a number greater than bad houses there is no solution. Else we continue by adding the bad edges to the pool and continue Kruskal. Now we have a ternary output depending on the size of the union being one.
+	
+	\newpage
+    % % % % % % % % % % % % % % % % %
+    %
+    %	Assignment 6
+    %
+	\mysection{Assignment 6: Segment trees}
+	\Problem{Supercomputer}{Java}{Easy}{0.5}
+This problem is intended to be solved with a Segment Tree, but since it consist of only binary numbers it's possible to just use a single BitSet at the cost of efficiency.
+	
+	\lstset{language=Java}
+	\begin{lstlisting}
+	import java.util.BitSet;
+	public class Supercomputer {
+    	public static void main(String[] args) {
+        	Kattio kattio = new Kattio(System.in, System.out);
+        	int n = kattio.getInt(), k = kattio.getInt();
+        	BitSet maybeMagic = new BitSet(n);
+        	for (int i = 0; i < k; i++)
+            	if (kattio.getWord().equals("F")) maybeMagic.flip(kattio.getInt());
+            	else System.out.println(maybeMagic.get(kattio.getInt(), kattio.getInt() + 					1).cardinality());
+    	}
+	}
+	\end{lstlisting}
+	
+	\Problem{Turbo}{C++}{Easy}{2}
+	Turbo is almost the same problem as Supercomputer, but had to be solved properly with a Segment tree due to time constraints. Here the problem specifies where it should flip bits and what to query.
+	\\\\
+	Also this is slightly tricky as one needs to keep track of some pointers going back and forth from max to min.
+	
+	\begin{lstlisting}
+	for (int i = 0, min = 0, max = 0; i < n; i++) {
+      int moveTo = i % 2 == 0 ? 0 : n - 1;
+      int moveFrom = i % 2 == 0 ? nums[min++] : nums[n - 1 - max++];
+      st.update(moveFrom, 0);
+      var res = st.query(Math.min(moveTo, moveFrom), Math.max(moveTo, moveFrom), 0);
+      System.out.println(res);
+    }
+	\end{lstlisting}
+	
+	\newpage
+    % % % % % % % % % % % % % % % % %
+    %
+    %	Assignment 7
+    %
+	\mysection{Assignment 7: Geometry 1}
+	\Problem{Counting Triangles}{C++}{Medium}{5}
+	This problem has some fascinating aspects which can be greatly simplified using linear algebra. As we need to use an almost DFS algorithm to iterate over all unique permutations of three line-segments given, and test if they all intersect. This itself is rather easy, but the method required to test if two line-segments intersects can be complex.
+	\\\\
+	First we store the line-segments as a vector v and a point p.
+	To test if they intersect we can solve the linear equation given by this equation and test if x and y is both between 0 and 1. Where a and b are the vector-points of the line-segment and c are the vectors between the points.
+	\[
+	\begin{vmatrix}
+	a_1x+b_1y = c_1\\
+	a_2x+b_2y = c_2
+	\end{vmatrix}
+	\]
+	
+	Since this equation set is of the format $Ax=b$ it can be solved simpler by using Cramer's rule. Giving the following function.
+	
+	\lstset{language=C++}
+	\begin{lstlisting}
+	bool interSects(LineSegment* other) {
+        double M = (-other->v->dx * this->v->dy + this->v->dx * other->v->dy);
+        
+        double s = (-this->v->dy * (this->p->x - other->p->x) 
+        + this->v->dx * (this->p->y - other->p->y)) / M;
+        double t = (other->v->dx * (this->p->y - other->p->y) 
+        - other->v->dy * (this->p->x - other->p->x)) / M;
+
+        return 0 <= s && s <= 1 && 0 <= t && t <= 1;
+    }
+	\end{lstlisting}	
+	
+	\Problem{Jabuke}{C++}{Easy}{2}
+	This problem is a wider know problem and is solved quite fast with math (geometry).	We can calculate the angle of a vector AB to a pint P by a new vector AP. But with linear algebra we can create the simpler function.
+	
+	\lstset{language=Java}
+	\begin{lstlisting}
+	public boolean pointIsLeftOrOn(Point test) {
+        return (b.x - a.x) * (test.y - a.y) >= (b.y - a.y) * (test.x - a.x);
+    }
+    \end{lstlisting}
+    
+    Now we can know it the point is to the left of any vector we simply test if the point is to the left of all vectors forming a triangle. The main problem now is that the points can be given in a reverse order, where we need to reverse the triangle or test \textit{pointIsRightOrOn()}. To circumvent this we can simply use the given formula for the areal. As that would be negative if reverted. Now we can rotate the triangle if necessary.
+	
+	
+
 
 \end{document}
