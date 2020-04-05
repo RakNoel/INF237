@@ -1,8 +1,5 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 #include <set>
-#include <map>
 #include <queue>
 #include <unordered_set>
 #include <string>
@@ -20,14 +17,14 @@ public:
 	}
 };
 
-string solve(int* numHouses, int* numBadHouses, int* possibleLines,
+string solve(const int* numHouses, const int* numBadHouses, const int* possibleLines,
 	priority_queue<Line>* goodLines,
 	priority_queue<Line>* badLines,
 	priority_queue<Line>* dumpLines) {
 
 	const string impossible = "impossible";
 	long totalCost = 0;
-	Line nextLine;
+	Line nextLine{};
 
 	//Edge case of 2 single bad houses
 	if (*numHouses == 2 && *numBadHouses == 2 && *possibleLines > 0)
@@ -65,18 +62,18 @@ string solve(int* numHouses, int* numBadHouses, int* possibleLines,
 
 
 int main() {
-	std::ios::sync_with_stdio(false);
-	std::cin.tie(NULL);
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
 
 	int numHouses, possibleLines, numBadHouses, tmp;
 	bool hasA, hasB;
-	Line tmpLine;
+	Line tmpLine{};
 
-	std::cin >> numHouses >> possibleLines >> numBadHouses;
+	cin >> numHouses >> possibleLines >> numBadHouses;
 
-	std::unordered_set<int> badHouses(numBadHouses);
+	unordered_set<int> badHouses(numBadHouses);
 	for (int i = 0; i < numBadHouses; i++) {
-		std::cin >> tmp;
+		cin >> tmp;
 		badHouses.emplace(tmp - 1);
 	}
 
@@ -85,9 +82,9 @@ int main() {
 	priority_queue<Line> dumpLines;
 
 	for (int i = 0; i < possibleLines; i++) {
-		std::cin >> tmpLine.from; tmpLine.from -= 1;
-		std::cin >> tmpLine.to; tmpLine.to -= 1;
-		std::cin >> tmpLine.cost;
+		cin >> tmpLine.from; tmpLine.from -= 1;
+		cin >> tmpLine.to; tmpLine.to -= 1;
+		cin >> tmpLine.cost;
 
 		hasA = (badHouses.count(tmpLine.from) > 0);
 		hasB = (badHouses.count(tmpLine.to) > 0);
@@ -100,5 +97,5 @@ int main() {
 			goodLines.emplace(tmpLine);
 	}
 
-	std::cout << solve(&numHouses, &numBadHouses, &possibleLines, &goodLines, &badLines, &dumpLines) << std::endl;
+	cout << solve(&numHouses, &numBadHouses, &possibleLines, &goodLines, &badLines, &dumpLines) << endl;
 }

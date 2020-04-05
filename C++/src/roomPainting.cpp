@@ -2,27 +2,28 @@
 #include <algorithm>
 #include <vector> 
 
+using namespace std;
 
 int main() {
-	std::ios::sync_with_stdio(false); // Speedup (do not mix with scanf/prinf)
-	std::cin.tie(NULL); // Speedup (do not mix with scanf/prinf)
+	ios::sync_with_stdio(false); // Speedup (do not mix with scanf/prinf)
+	cin.tie(nullptr); // Speedup (do not mix with scanf/prinf)
 	int n, m, a;
-	std::cin >> n >> m;
+	cin >> n >> m;
 
-	std::vector<int> possible;
-	std::vector<int> wanted;
+	vector<int> possible;
+	vector<int> wanted;
 
 	for (int i = 0; i < n; i++) {
-		std::cin >> a;
+		cin >> a;
 		possible.push_back(a);
 	}
 	for (int i = 0; i < m; i++) {
-		std::cin >> a;
+		cin >> a;
 		wanted.push_back(a);
 	}
 
-	std::sort(possible.begin(), possible.end());
-	std::sort(wanted.begin(), wanted.end());
+	sort(possible.begin(), possible.end());
+	sort(wanted.begin(), wanted.end());
 
 	int lastTaken = 0;
 	long waste = 0;
@@ -35,5 +36,5 @@ int main() {
 				break;
 			}
 
-	std::cout << waste << std::endl;
+	cout << waste << endl;
 }

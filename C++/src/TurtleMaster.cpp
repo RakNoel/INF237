@@ -1,9 +1,12 @@
 #include <string>
 #include <iostream>
 
+using namespace std;
+
 class Pos {
 public:
     Pos() = default;
+
     int x{}, y{};
 
     Pos(int posX, int PosY) {
@@ -46,7 +49,7 @@ public:
 };
 
 void finish(bool success) {
-    std::cout << ((success) ? "Diamond!" : "Bug!") << std::endl;
+    cout << ((success) ? "Diamond!" : "Bug!") << endl;
     exit(0);
 }
 
@@ -56,16 +59,15 @@ int main() {
     Pos *robot = new Pos(0, 7);
 
     for (auto &i : map)
-        std::cin >> i;
+        cin >> i;
 
     map[robot->y][robot->x] = '.';
 
-    std::string actions;
-    std::cin >> actions;
+    string actions;
+    cin >> actions;
     Pos holder, fire;
 
     for (auto &action : actions) {
-        //std::cout << action << " " << robot->x << " " << robot->y << std::endl;
         switch (action) {
             case 'F':
                 holder = robot->getNextMove(direction);

@@ -9,7 +9,7 @@ private:
     long total;
 
 public:
-    UnionFind(int size) {
+    explicit UnionFind(int size) {
         this->total = size;
         for (int i = 0; i < size; i++) {
             pointer.push_back(i);
