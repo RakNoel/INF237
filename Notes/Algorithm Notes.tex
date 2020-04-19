@@ -316,7 +316,41 @@ This problem is intended to be solved with a Segment Tree, but since it consist 
     
     Now we can know it the point is to the left of any vector we simply test if the point is to the left of all vectors forming a triangle. The main problem now is that the points can be given in a reverse order, where we need to reverse the triangle or test \textit{pointIsRightOrOn()}. To circumvent this we can simply use the given formula for the areal. As that would be negative if reverted. Now we can rotate the triangle if necessary.
 	
+	\newpage
+    % % % % % % % % % % % % % % % % %
+    %
+    %	Assignment 8
+    %
+	\mysection{Assignment 8: Exponential time algorithms}
+	\Problem{Coloring Graphs}{C++}{Hard}{8}
+	Graph coloring is a well known NP-hard problem. This task is solved by testing all possible coloring combinations, resulting in a $k^n$ runtime. This can be greatly improved by using dynamic programming and backtracking to a runtime of $2^n$. This is solved with recursive branching testing all possible solutions and aborting if invalid.
 	
-
+		\newpage
+    % % % % % % % % % % % % % % % % %
+    %
+    %	Assignment 9
+    %
+	\mysection{Assignment 9: Dynamic programming 2}
+	\Problem{Rebel Portals}{Java}{Hard}{8}
+	Rebel portals is a famous problem in algorithms called \textit{The travelling salesperson problem} (another NP-hard problem) but the possibility of using portals adds an entire new complexity. The problem is a fully connected graph, and finding the optimal solution requires brute-force of $n!$. This problem can be solved faster with dynamic programming by using backtracking. The following formula shows how this is done;
+	
+	\[
+		g(i, S) = \displaystyle\min_{k \in S} \{ c_{i \rightarrow k} + g(k, S - \{ k \}) \}
+	\]
+	
+	In my solution I use a bottom up recursive branching backtracking algorithm, branching from a planet to all other planets. This is done by passing a the $S$ subset of unvisited planets further down, and branching to all planets in $S$ at each stage. 
+	\\\\
+	To solve the problem of the portals, we also need to pass the portal status of all planets down the branching, and if the portal is not open on the current planet we need to branch to all other unvisited planets with an open portal as well. Finally all leaf nodes should simply return to the home planet $0$ and we can return the distance cost of either the distance home, or $0$ if wee can use a portal.
+	\\\\
+	Now keeping track of open portals and each subset will require a harsh data structure using either a lot of memory, or being slow. To solve this, I chose to represent these as binary arrays in integers. Accessing bits can be done by testing if $\{(S \oplus (1 << i)) > 0 \}$
+	\\\\
+	To fully make this dynamic we also need to memoize. We will visit a state with the corresponding planet, subset and portal-state multiple times, and this can be stored. The problem is that the combination of both the subsets and portals is $2^n$ or $(1 << n)$ resulting in $n * 2^{2n}$ cells for the memo. Luckily we only need to store the portal-state on the current planet so the required size becomes $2n * 2^n$ which is a difference in gigabytes for only 18 planets.
+	
+	\Problem{The Citrus Intern}{Java}{Medium}{4}
+	This problem can be solved by finding the graphs \textit{Dominating set}. This is another NP-hard problem that can be simplified with dynamic programming as long as the graph is a tree which it luckily is. Again by recursive branching we can visit all nodes and calculate their respective values bottom up. Then the top node holds the final value.
+	\\\\
+	The twist of this problem is that two adjacent vertexes cannot be connected. This is solved by never evaluating the of holding the current node in the set while a child node is also in the set.
+	\\\\
+	Another small issue is that we need to know which node is the top-node of the tree. This is done by topological sorting the graph by a DFS and choosing the one with the largest number of reachable nodes.
 
 \end{document}
