@@ -2,6 +2,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
+
+/**
+ * TODO: Currently wrong solution
+ */
 public class ClosestPair2 {
     public static dPoint[] gP;
 
